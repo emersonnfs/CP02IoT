@@ -8,6 +8,9 @@ import json
 from googlesearch import search
 import webbrowser
 import wikipedia
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+#from google.cloud import translate_v3 as translate
 
 def falar(resposta):
     num_aleatorio = random.randint(1, 100000)
@@ -146,6 +149,56 @@ def sugerir_livro():
     input("Aperte enter para voltar para assistente")
 
 
+def obter_piada():
+    url = "https://sv443.net/jokeapi/v2/joke/Any?lang=pt"
+
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            dados = json.loads(response.content)
+            if dados['type'] == 'single':
+                piada = dados['joke']
+            elif dados['type'] == 'twopart':
+                piada = f"{dados['setup']} {dados['delivery']}"
+            else:
+                piada = "Não foi possível obter a piada."
+
+            falar(piada)
+        else:
+            falar("Erro ao obter piada. Por favor, tente novamente mais tarde.")
+    except requests.exceptions.RequestException:
+        falar("Ocorreu um erro de conexão. Verifique sua conexão com a internet e tente novamente.")
+
+def pesquisar_no_youtube():
+    falar("Quer ver um vídeo sobre qual assunto?")
+    pesquisa=ouvir_comando()
+    API_KEY="AIzaSyBSKWoAgLPRxolLC-YzUF7VxoywtMIKAss"
+    youtube = build('youtube', 'v3', developerKey=API_KEY)
+
+    try:
+        request = youtube.search().list(
+            q=pesquisa,
+            part='id',
+            maxResults=1,
+            type='video'
+        )
+        response = request.execute()
+
+        if 'items' in response:
+            if len(response['items']) > 0:
+                video_id = response['items'][0]['id']['videoId']
+                video_url = f'https://www.youtube.com/watch?v={video_id}'
+                falar("Abrindo o vídeo")
+                print("Carregando...")
+                webbrowser.open(video_url)
+        else:
+            falar("Nenhum vídeo encontrado.")
+        falar("Aperte enter para voltar para assistente")
+        input("Aperte enter para voltar para assistente")
+    except HttpError as e:
+        print(f'Erro ao fazer a pesquisa no YouTube: {e}')
+        falar("Erro ao fazer a pesquisa no YouTube.")
+
 input("aperte enter para começar.")
 while True:
     comando = ouvir_comando()
@@ -153,8 +206,8 @@ while True:
         resp="Sim, mestre. O que posso fazer?"
         falar(resp)
         while True:
-            #01-CADASTRAR EVENTO NA AGENDA
             novo_comando = ouvir_comando()
+            #01-CADASTRAR EVENTO NA AGENDA
             if 'cadastrar evento na agenda' in novo_comando:
                 cadastrar_na_agenda()
             #02-LER AGENDA
@@ -175,10 +228,20 @@ while True:
             #07-SUGERIR UM LIVRO
             elif 'sugere um livro' in novo_comando:
                 sugerir_livro()
+            #08-CONTAR UMA PIADA
+            elif 'conta uma piada' in novo_comando:
+                obter_piada()
+            #09-PESQUISAR NO YOUTUBE
+            elif 'pesquisar no YouTube' in novo_comando:
+                pesquisar_no_youtube()
+            #10-
+
             #00-PARAR PESQUISA
             elif 'parar sexta-feira' in novo_comando:
                 falar("Sexta-feira está em pausa mestre. Para reativar a Sexta-Feira diga o comando, ok sexta-feira. Para desligar a sexta-feira basta dizer o comando, desligar sexta-feira")
                 break
+            else:
+                falar("Ops, não entendi esse comando fale novamente.")
     elif 'desligar sexta-feira' in comando:
         falar("Tamo junto mestre. Precisando é só da play nessa budega de cima")
         break
