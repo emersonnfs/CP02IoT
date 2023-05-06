@@ -1,0 +1,44 @@
+pip install pyttsx3
+pip install gtts
+pip install SpeechRecognition
+pip install playsound==1.2.2
+pip install pyaudio
+pip install results
+pip install googlesearch-python
+
+Verificar a previsão do tempo para uma determinada cidade usando a API OpenWeatherMap.
+Executar uma busca no Google usando a biblioteca googlesearch-python para pesquisar informações sobre um determinado assunto.
+Tocar uma determinada música ou lista de reprodução usando a biblioteca vlc ou pyglet.
+Fazer uma busca na Wikipedia usando a biblioteca wikipedia para encontrar informações sobre um determinado tópico.
+Ler as últimas notícias de um determinado site usando a biblioteca requests para acessar a API do site de notícias.
+Enviar um e-mail para um destinatário usando a biblioteca smtplib para enviar o e-mail e a biblioteca speech_recognition para transcrever o conteúdo do e-mail.
+Abrir um arquivo ou pasta em seu computador usando a biblioteca os para executar comandos de sistema.
+Fazer uma busca por vídeos no YouTube usando a API do YouTube e a biblioteca google-auth e google-api-python-client.
+Definir um temporizador ou alarme usando a biblioteca time para agendar eventos futuros.
+Realizar cálculos matemáticos simples usando a biblioteca math.
+
+Reproduzir um vídeo do YouTube.
+Pesquisar e reproduzir uma música do Spotify.
+Controlar a reprodução de música (pausar, reproduzir, próximo, anterior).
+Comandos de lembrete e lista de tarefas:
+
+Adicionar um item à lista de compras.
+Definir um lembrete para uma data e hora específicas.
+Verificar a lista de tarefas pendentes.
+Comandos de notícias e atualidades:
+
+Obter as últimas notícias de uma fonte de notícias específica (usando uma API de notícias).
+Ler as manchetes mais recentes em uma determinada categoria (por exemplo, esportes, tecnologia, saúde).
+Comandos de conversão de unidades:
+
+Converter uma medida de temperatura, como Celsius para Fahrenheit.
+Converter uma medida de comprimento, como metros para pés.
+Comandos de consulta de informações:
+
+Obter informações sobre um filme específico (usando uma API de informações de filmes, como o IMDb).
+Obter informações sobre um livro específico (usando uma API de informações de livros, como o Google Books API).
+Comandos de jogo:
+
+Jogar um jogo de adivinhação.
+Jogar um jogo de sorteio (por exemplo, lançar um dado virtual).
+Essas são apenas algumas ideias adicionais para expandir a funcionalidade do seu assistente. Lembre-se de verificar as documentações das bibliotecas e APIs que você deseja usar para implementar os comandos desejados.
