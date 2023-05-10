@@ -210,36 +210,40 @@ while True:
             #01-CADASTRAR EVENTO NA AGENDA
             if 'cadastrar evento na agenda' in novo_comando:
                 cadastrar_na_agenda()
+                break
             #02-LER AGENDA
             elif 'ler agenda' in novo_comando:
                 ler_agenda()
+                break
             #03-PREVISÃO DO TEMPO
             elif 'previsão do tempo' in novo_comando:
                obter_previsao_do_tempo()
+               break
             #04-PESQUISAR NO GOOGLE
             elif 'pesquisar no Google' in novo_comando:
                 pesquisar_no_google()
+                break
             #05-PESQUISAR NO WIKIPEDIA
             elif 'pesquisar no Wikipédia' in novo_comando:
                 pesquisar_wikipedia()
+                break
             #06-SUGERIR UM FILME
             elif 'sugere um filme' in novo_comando:
                 obter_sugestao_filme()
+                break
             #07-SUGERIR UM LIVRO
             elif 'sugere um livro' in novo_comando:
                 sugerir_livro()
+                break
             #08-CONTAR UMA PIADA
             elif 'conta uma piada' in novo_comando:
                 obter_piada()
+                break
             #09-PESQUISAR NO YOUTUBE
             elif 'pesquisar no YouTube' in novo_comando:
                 pesquisar_no_youtube()
-            #10-
-
-            #00-PARAR PESQUISA
-            elif 'parar sexta-feira' in novo_comando:
-                falar("Sexta-feira está em pausa mestre. Para reativar a Sexta-Feira diga o comando, ok sexta-feira. Para desligar a sexta-feira basta dizer o comando, desligar sexta-feira")
                 break
+            #10-
             else:
                 falar("Ops, não entendi esse comando fale novamente.")
     elif 'desligar sexta-feira' in comando:
