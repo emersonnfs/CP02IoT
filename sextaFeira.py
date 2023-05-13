@@ -10,7 +10,6 @@ import webbrowser
 import wikipedia
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-#from google.cloud import translate_v3 as translate
 
 def falar(resposta):
     num_aleatorio = random.randint(1, 100000)
@@ -30,7 +29,6 @@ def ouvir_comando():
         comando = r.recognize_google(audio, language='pt')
         print("Você disse: " + comando)
     except sr.UnknownValueError:
-        falar("Não entendi o que você disse")
         comando = ""
     return comando
 
@@ -199,6 +197,30 @@ def pesquisar_no_youtube():
         print(f'Erro ao fazer a pesquisa no YouTube: {e}')
         falar("Erro ao fazer a pesquisa no YouTube.")
 
+def identificar_musica():
+    falar("Fala o trecho da música que deseja reconhecer.")
+    trecho_musica=ouvir_comando()
+    url = "https://shazam.p.rapidapi.com/search"
+    querystring = {"term": trecho_musica, "locale": "pt-BR", "offset": "0"}
+
+    headers = {
+        "X-RapidAPI-Key": "164b08140bmsh29cb81ffa856108p1bd9e4jsnc877eceecbb7",
+        "X-RapidAPI-Host": "shazam.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+    data = response.json()
+
+    if "tracks" in data and "hits" in data["tracks"] and len(data["tracks"]["hits"]) > 0:
+        track = data["tracks"]["hits"][0]["track"]
+        title = track["title"]
+        subtitle = track["subtitle"]
+
+        falar(f"Esse trecho é da música {title} do artista {subtitle} ")
+    else:
+        falar("Nenhuma música encontrada com o trecho fornecido.")
+
+
 input("aperte enter para começar.")
 while True:
     comando = ouvir_comando()
@@ -243,9 +265,14 @@ while True:
             elif 'pesquisar no YouTube' in novo_comando:
                 pesquisar_no_youtube()
                 break
-            #10-
+            #10-PESQUISAR MÚSICA
+            elif 'pesquisar música' in novo_comando:
+                identificar_musica()
+                break
             else:
                 falar("Ops, não entendi esse comando fale novamente.")
     elif 'desligar sexta-feira' in comando:
         falar("Tamo junto mestre. Precisando é só da play nessa budega de cima")
         break
+    else:
+        falar("Ops, não entendi esse comando fale novamente.")
