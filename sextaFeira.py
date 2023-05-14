@@ -260,7 +260,25 @@ def buscar_noticia():
     voltar_assistente()
 
 
+def pesquisar_profissao():
+    falar("Sobre qual profissão você deseja pesquisar?")
+    profissao = ouvir_comando()
 
+    url = f"https://pt.wikipedia.org/api/rest_v1/page/summary/{profissao}"
+    response = requests.get(url)
+    dados = json.loads(response.content)
+
+    if "title" in dados:
+        falar(f"Vou falar um pouco sobre a profissão de {dados['title']}.")
+        if "extract" in dados:
+            texto = dados["extract"]
+            falar(texto)
+        else:
+            falar("Não encontrei informações sobre essa profissão.")
+    else:
+        falar("Não encontrei informações sobre essa profissão.")
+
+    voltar_assistente()
 
 input("aperte enter para começar.")
 while True:
@@ -313,6 +331,10 @@ while True:
             #11- PESQUISAR NOTÍCIA
             elif 'pesquisar notícia' in novo_comando:
                 buscar_noticia()
+                break
+            #12- PESQUISAR PROFISSÃO
+            elif 'pesquisar profissão' in novo_comando:
+                pesquisar_profissao()
                 break
             else:
                 falar("Ops, não entendi esse comando fale novamente.")
