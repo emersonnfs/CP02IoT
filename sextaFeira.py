@@ -10,6 +10,7 @@ import webbrowser
 import wikipedia
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+import time
 
 def falar(resposta):
     num_aleatorio = random.randint(1, 100000)
@@ -32,6 +33,11 @@ def ouvir_comando():
         comando = ""
     return comando
 
+def voltar_assistente():
+    time.sleep(3)
+    falar("Pressione enter para voltar para assistente")
+    input("Pressione enter para voltar para assistente")
+
 def cadastrar_na_agenda():
     falar("Que evento deseja cadastrar na agenda?")
     novo_comando = ouvir_comando()
@@ -39,12 +45,16 @@ def cadastrar_na_agenda():
         arquivo.write("\n" + novo_comando)
     falar("Cadastrando evento na agenda...")
 
+    voltar_assistente()
+
 def ler_agenda():
     falar("Abrindo agenda...")
     with open("TesteCp2Agenda.txt","r") as arquivo:
         for linha in arquivo:
             falar(linha)
         falar("Foram lidos todos os eventos da agenda")
+
+    voltar_assistente()
 
 def obter_previsao_do_tempo():
     falar("Que cidade gostaria de saber a previsão do tempo?")
@@ -62,6 +72,8 @@ def obter_previsao_do_tempo():
     else:
         falar("Erro ao obter a previsão do tempo.")
 
+    voltar_assistente()
+
 def pesquisar_no_google():
     falar("O que deseja pesquisar?")
     novo_comando = ouvir_comando()
@@ -69,8 +81,8 @@ def pesquisar_no_google():
         falar("Aqui está o primeiro site do google que satisfaz a sua pesquisa.")
         webbrowser.open(result)
         break
-    falar("Aperte enter para voltar para assistente")
-    input("Aperte enter para voltar para assistente")
+
+    voltar_assistente()
 
 def pesquisar_wikipedia():
     falar("O que deseja pesquisar na Wikipedia?")
@@ -83,6 +95,8 @@ def pesquisar_wikipedia():
         falar("Por favor, seja mais específico em sua pesquisa.")
     except wikipedia.exceptions.PageError as e:
         falar("Não foi possível encontrar informações sobre o tópico pesquisado.")
+
+    voltar_assistente()
 
 def obter_sugestao_filme():
     falar("Carregando")
@@ -99,6 +113,8 @@ def obter_sugestao_filme():
         falar(f"Eu sugiro o filme {titulo}. Aqui está uma breve descrição: {descricao}")
     else:
         falar("Desculpe, não foi possível obter uma sugestão de filme no momento.")
+
+    voltar_assistente()
 
 
 def sugerir_livro():
@@ -143,8 +159,7 @@ def sugerir_livro():
     except requests.exceptions.RequestException:
         falar("Ocorreu um erro de conexão. Verifique sua conexão com a internet e tente novamente.")
 
-    falar("Aperte enter para voltar para assistente")
-    input("Aperte enter para voltar para assistente")
+    voltar_assistente()
 
 
 def obter_piada():
@@ -166,6 +181,7 @@ def obter_piada():
             falar("Erro ao obter piada. Por favor, tente novamente mais tarde.")
     except requests.exceptions.RequestException:
         falar("Ocorreu um erro de conexão. Verifique sua conexão com a internet e tente novamente.")
+    voltar_assistente()
 
 def pesquisar_no_youtube():
     falar("Quer ver um vídeo sobre qual assunto?")
@@ -191,11 +207,10 @@ def pesquisar_no_youtube():
                 webbrowser.open(video_url)
         else:
             falar("Nenhum vídeo encontrado.")
-        falar("Aperte enter para voltar para assistente")
-        input("Aperte enter para voltar para assistente")
     except HttpError as e:
         print(f'Erro ao fazer a pesquisa no YouTube: {e}')
         falar("Erro ao fazer a pesquisa no YouTube.")
+    voltar_assistente()
 
 def identificar_musica():
     falar("Fala o trecho da música que deseja reconhecer.")
@@ -211,6 +226,7 @@ def identificar_musica():
     response = requests.get(url, headers=headers, params=querystring)
     data = response.json()
 
+
     if "tracks" in data and "hits" in data["tracks"] and len(data["tracks"]["hits"]) > 0:
         track = data["tracks"]["hits"][0]["track"]
         title = track["title"]
@@ -219,6 +235,8 @@ def identificar_musica():
         falar(f"Esse trecho é da música {title} do artista {subtitle} ")
     else:
         falar("Nenhuma música encontrada com o trecho fornecido.")
+
+    voltar_assistente()
 
 
 input("aperte enter para começar.")
@@ -250,11 +268,11 @@ while True:
                 pesquisar_wikipedia()
                 break
             #06-SUGERIR UM FILME
-            elif 'sugere um filme' in novo_comando:
+            elif 'sugira um filme' in novo_comando:
                 obter_sugestao_filme()
                 break
             #07-SUGERIR UM LIVRO
-            elif 'sugere um livro' in novo_comando:
+            elif 'sugira um livro' in novo_comando:
                 sugerir_livro()
                 break
             #08-CONTAR UMA PIADA
