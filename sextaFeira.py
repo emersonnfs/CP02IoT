@@ -238,6 +238,29 @@ def identificar_musica():
 
     voltar_assistente()
 
+def buscar_noticia():
+    falar("Sobre qual assunto você deseja buscar notícias?")
+    assunto = ouvir_comando()
+
+    url = f"https://newsapi.org/v2/everything?q={assunto}&language=pt&apiKey=43ff41adba524f7496e38d687872a87c"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        dados = json.loads(response.content)
+        if dados['status'] == 'ok' and dados['totalResults'] > 0:
+            falar("Aqui está a principal notícia encontrada:")
+            artigo = dados['articles'][0]
+            falar(f"{artigo['title']}. {artigo['description']}")
+        else:
+            falar("Não foram encontradas notícias sobre o assunto pesquisado.")
+    else:
+        falar("Não foi possível realizar a busca de notícias.")
+
+    voltar_assistente()
+
+
+
 
 input("aperte enter para começar.")
 while True:
@@ -286,6 +309,10 @@ while True:
             #10-PESQUISAR MÚSICA
             elif 'pesquisar música' in novo_comando:
                 identificar_musica()
+                break
+            #11- PESQUISAR NOTÍCIA
+            elif 'pesquisar notícia' in novo_comando:
+                buscar_noticia()
                 break
             else:
                 falar("Ops, não entendi esse comando fale novamente.")
